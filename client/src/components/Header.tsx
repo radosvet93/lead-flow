@@ -1,9 +1,8 @@
 const Header = () => {
-
   return (
-    <h1>
-      Lead Flow
-    </h1>
+    <header className="bg-primary text-primary-foreground p-4">
+      <h1 className="">Lead Flow</h1>
+    </header>
   );
 };
 
