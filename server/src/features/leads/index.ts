@@ -1,12 +1,12 @@
 import { Router, type Response } from "express";
-import { listProspects, prospectsSelectSchema } from "./model";
+import { leadsSelectSchema, listLeads } from "./model";
 
 export const router = Router();
 
 router.get("/", async ({ res }: { res: Response }) => {
-  const prospectDB = await listProspects();
+  const leadDB = await listLeads();
 
-  const prospectDto = prospectDB.map(row => prospectsSelectSchema.parse({
+  const leadDto = leadDB.map(row => leadsSelectSchema.parse({
     id: row.id,
     name: row.name,
     email: row.email,
@@ -14,8 +14,9 @@ router.get("/", async ({ res }: { res: Response }) => {
     jobTitle: row.jobTitle,
     company: row.company,
     notes: row.notes,
+    projectId: row.projectId,
     createdAt: row.createdAt
   }))
 
-  res.json(prospectDto);
+  res.json(leadDto);
 });
