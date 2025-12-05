@@ -49,13 +49,7 @@ const Projects = ({ projects, onCreateProject }: ProjectsProps) => {
               projectId: project.id
             }}
           >
-            <ProjectCard
-              id={project.id}
-              name={project.name}
-              description={project.description}
-              createdAt={project.createdAt}
-            >
-            </ProjectCard>
+            <ProjectCard id={project.id} />
           </Link>
         ))}
 
