@@ -4,7 +4,7 @@ import { createSelectSchema } from 'drizzle-zod';
 import { projectsTable } from "../projects/model";
 import { eq } from "drizzle-orm";
 
-export const statusEnum = pgEnum("status", ["new", "contacted", "interested", "declined"]);
+export const statusEnum = pgEnum("status", ["new", "contacted", "interested", "declined", "closed"]);
 
 export const leadsTable = pgTable("leads", {
   id: uuid('id').primaryKey().defaultRandom(),
