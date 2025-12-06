@@ -1,0 +1,31 @@
+export type StatusUnion = "new" | "contacted" | "interested" | "declined" | "closed";
+
+export interface Project {
+  id: string,
+  name: string,
+  description: string,
+  createdAt: Date
+}
+
+export interface Lead {
+  id: string,
+  name: string,
+  email: string,
+  status: StatusUnion,
+  jobTitle: string,
+  company: string,
+  notes: string,
+  projectId: string,
+  createdAt: Date
+}
+
+export interface ProjectLeads extends Project {
+  leads: Lead[]
+}
+
+export interface Email {
+  id: string,
+  content: string,
+  status: string,
+  createdAt: Date
+}
