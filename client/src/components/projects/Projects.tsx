@@ -5,13 +5,7 @@ import { Button } from "../ui/button";
 import ProjectForm from "./ProjectForm";
 import ProjectCard from "./ProjectCard";
 import { Link } from "@tanstack/react-router";
-
-export interface Project {
-  id: string,
-  name: string,
-  description: string,
-  createdAt: Date
-}
+import type { Project } from "@/types";
 
 interface ProjectsProps {
   projects: Project[],
