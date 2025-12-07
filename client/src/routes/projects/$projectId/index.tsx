@@ -10,7 +10,7 @@ export const Route = createFileRoute('/projects/$projectId/')({
 });
 
 function Project() {
-  const { name, description, leads } = Route.useLoaderData();
+  const { name, description, leads, emailCount } = Route.useLoaderData();
   const closedLeads = leads.filter((lead) => lead?.status === 'closed').length;
   const leadsNumber = leads?.length;
   const conversionRate = leadsNumber > 0 ? Math.round((closedLeads / leadsNumber) * 100) : 0;
@@ -44,7 +44,7 @@ function Project() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Emails send</p>
-                  <p className="text-3xl font-bold mt-2">{'-'}</p>
+                  <p className="text-3xl font-bold mt-2">{emailCount ?? '-'}</p>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
                   <MessageSquare className="w-4 h-4 text-blue-500" />

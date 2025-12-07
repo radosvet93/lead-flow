@@ -19,7 +19,11 @@ export interface Lead {
   createdAt: Date
 }
 
-export interface ProjectLeads extends Project {
+interface EmailCount {
+  emailCount: string
+}
+
+export interface ProjectLeads extends Project, EmailCount {
   leads: Lead[]
 }
 

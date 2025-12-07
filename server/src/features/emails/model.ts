@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../../db/setup";
 import { pgTable, text, uuid, timestamp, pgEnum } from 'drizzle-orm/pg-core';
 import { createSelectSchema } from 'drizzle-zod';
@@ -20,3 +20,9 @@ export const emailsSelectSchema = createSelectSchema(emailsTable)
 
 export const emailById = (id: string) => db.select().from(emailsTable).where(eq(emailsTable.id, id));
 export const listEmails = () => db.select().from(emailsTable)
+export const countEmailsByProject = (projectId: string) =>
+  db
+    .select({ count: sql<number>`COUNT(*)` })
+    .from(emailsTable)
+    .innerJoin(leadsTable, eq(emailsTable.leadId, leadsTable.id))
+    .where(eq(leadsTable.projectId, projectId));

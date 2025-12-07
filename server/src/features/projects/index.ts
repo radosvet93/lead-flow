@@ -1,6 +1,7 @@
 import { Router, type Response, type Request } from "express";
 import { listProjects, projectById, projectsSelectSchema } from "./model";
 import { leadsSelectSchema, listLeadsByProject } from "../leads/model";
+import { countEmailsByProject } from "../emails/model";
 
 export const router = Router();
 
@@ -19,7 +20,8 @@ router.get("/", async ({ res }: { res: Response }) => {
 
 router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
   try {
-    const projectDB = await projectById(req.params.id);
+    const id = req.params.id;
+    const projectDB = await projectById(id);
 
     if (!projectDB.length) {
       return res.status(404).json({ error: "Project not found" });
@@ -32,7 +34,11 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
       createdAt: projectDB[0].createdAt
     })
 
-    const leadsDB = await listLeadsByProject(req.params.id);
+    const leadsDB = await listLeadsByProject(id);
+
+    if (!leadsDB.length) {
+      return res.status(404).json({ error: "List of leads not found" });
+    }
 
     const leadsDto = leadsDB.map(row => leadsSelectSchema.parse({
       id: row.id,
@@ -48,11 +54,13 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
 
     const leadsDtoWithoutProjectId = leadsDto.map(({ projectId, ...rest }) => rest);
 
+    const [{ count: emailCount }] = await countEmailsByProject(id);
+
     return res.json({
       ...projectDto,
-      leads: leadsDtoWithoutProjectId
+      leads: leadsDtoWithoutProjectId,
+      emailCount
     });
-
 
   } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
