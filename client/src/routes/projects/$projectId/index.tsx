@@ -1,19 +1,32 @@
-import Header from '@/components/Header';
-import { Card } from '@/components/ui/card';
-import { fetchProject } from '@/services/fetchProject';
 import { createFileRoute } from '@tanstack/react-router';
-import { CircleCheck, MessageSquare, TrendingUp, Users } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { DragAndDrop } from '@/components/DragAndDrop';
+import Header from '@/components/Header';
+import { Button } from '@/components/ui/button';
+import { AnalyticsCardForProject } from '@/components/projects/AnalyticsCardForProject';
+import { useGetSingleProject } from '@/hooks/useGetSingleProject';
+import { useUpdateLeadStatus } from '@/hooks/useUpdatedLeadStatus';
+import type { Lead } from '@/types';
 
 export const Route = createFileRoute('/projects/$projectId/')({
-  loader: ({ params: { projectId } }) => fetchProject(projectId),
   component: Project,
 });
 
 function Project() {
-  const { name, description, leads, emailCount } = Route.useLoaderData();
-  const closedLeads = leads.filter((lead) => lead?.status === 'closed').length;
-  const leadsNumber = leads?.length;
-  const conversionRate = leadsNumber > 0 ? Math.round((closedLeads / leadsNumber) * 100) : 0;
+  const { projectId } = Route.useParams();
+
+  const { data: project, isLoading } = useGetSingleProject(projectId);
+
+  const updateLeadStatus = useUpdateLeadStatus();
+
+  if (isLoading || !project) return <div>Loading…</div>;
+
+  const { name, description, emailCount, leads } = project;
+
+  const handleUpdateLead = (id: string, status: Lead['status']) => {
+    // optimistic update directly in query cache
+    updateLeadStatus.mutate({ id, status });
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-background to-muted">
@@ -26,56 +39,20 @@ function Project() {
             <p className="text-muted-foreground mt-1">{description}</p>
           </div>
 
-          {/* Analytics Cards */}
-          <div className="grid gap-4 md:grid-cols-4">
-            <Card className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Leads</p>
-                  <p className="text-3xl font-bold mt-2">{leadsNumber ?? '-'}</p>
-                </div>
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Users className="w-4 h-4 text-primary" />
-                </div>
-              </div>
-            </Card>
+          {/* Analytics cards */}
+          <AnalyticsCardForProject leads={leads} emailCount={emailCount} />
 
-            <Card className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Emails send</p>
-                  <p className="text-3xl font-bold mt-2">{emailCount ?? '-'}</p>
-                </div>
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <MessageSquare className="w-4 h-4 text-blue-500" />
-                </div>
-              </div>
-            </Card>
+          <div className='flex justify-between'>
+            <div>
+              <h3 className="text-2xl font-bold">Outreach Pipeline</h3>
+              <p className='text-muted-foreground mt-1'>Drag leads between stages to track progress</p>
+            </div>
 
-            <Card className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Conversion Rate</p>
-                  <p className="text-3xl font-bold mt-2">{conversionRate}%</p>
-                </div>
-                <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-purple-500" />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Closed Deals</p>
-                  <p className="text-3xl font-bold mt-2">{closedLeads ?? '-'}</p>
-                </div>
-                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                  <CircleCheck className="w-4 h-4 text-green-500" />
-                </div>
-              </div>
-            </Card>
+            <Button><Plus />Add Lead</Button>
           </div>
+
+          {/* DnD Pipeline */}
+          <DragAndDrop leads={leads} onUpdateLead={handleUpdateLead} />
 
         </div>
       </div>
