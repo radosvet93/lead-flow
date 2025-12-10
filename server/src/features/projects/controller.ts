@@ -29,15 +29,12 @@ export const getProjectByIdHandler = async (req: Request<{ id: string }>, res: R
       .filter(row => row.lead !== null)
       .map(row => leadsSelectSchema.parse(row.lead));
 
-    // Remove the projectId, don't want to expose it
-    const leadsWithoutProjectId = leads.map(({ projectId, ...rest }) => rest);
-
     // Get the email count per project
     const [{ count: emailCount }] = await countEmailsByProject(id);
 
     return res.json({
       ...project,
-      leads: leadsWithoutProjectId,
+      leads,
       emailCount
     });
 
