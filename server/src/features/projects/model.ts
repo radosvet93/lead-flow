@@ -43,3 +43,4 @@ export const projectWithLeads = (id: string) =>
     .where(eq(projectsTable.id, id));
 
 export const createProject = (project: ProjectInsertInput) => db.insert(projectsTable).values(project).returning();
+export const deleteProject = (id: string) => db.delete(projectsTable).where(eq(projectsTable.id, id)).returning();

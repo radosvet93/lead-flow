@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createProject, listProjects, projectsSelectSchema, projectWithLeads } from "./model";
+import { createProject, deleteProject, listProjects, projectsSelectSchema, projectWithLeads } from "./model";
 import { leadsSelectSchema } from '../leads/model';
 import { countEmailsByProject } from '../emails/model';
 import { ZodError } from 'zod';
@@ -62,5 +62,21 @@ export const createProjectHandler = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({ error: "Failed to create lead." });
+  }
+}
+
+export const deleteProjectHandler = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const [deleted] = await deleteProject(id);
+
+    if (!deleted) {
+      return res.status(404).json({ error: "Project not found." });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to delete project." });
   }
 }
