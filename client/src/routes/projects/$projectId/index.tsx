@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group';
 import type { Lead } from '@/types';
 import { useState } from 'react';
+import { useCreateLead } from '@/hooks/useCreateLead';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: Project,
@@ -33,13 +34,16 @@ const formSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters.")
     .max(32, "Name must be at most 32 characters."),
-  company: z.string(),
+  company: z.string().min(2, 'Company must be at least 2 characters.'),
   email: z.email(),
   jobTitle: z.string(),
   notes: z.string().max(100, "Notes must be at most 100 characters."),
 });
 
 function Project() {
+  const { mutate: createLead } = useCreateLead();
+  const { projectId } = Route.useParams();
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -52,21 +56,21 @@ function Project() {
       onSubmit: formSchema,
     },
     onSubmit: ({ value }) => {
-      console.log('sumbitting', value);
-
-      // TODO: create new lead, if all good, close dialog
       try {
+        createLead({
+          ...value,
+          projectId
+        });
 
         setOpen(false);
         form.reset();
+
       } catch (error) {
         console.log('error', error);
       }
     }
   });
   const [open, setOpen] = useState(false);
-
-  const { projectId } = Route.useParams();
 
   const { data: project, isLoading } = useGetSingleProject(projectId);
 

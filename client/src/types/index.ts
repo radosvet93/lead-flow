@@ -33,3 +33,5 @@ export interface Email {
   status: string,
   createdAt: Date
 }
+
+export type CreateLeadPayload = Omit<Lead, 'id' | 'status' | 'createdAt'>;
