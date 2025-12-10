@@ -8,18 +8,15 @@ import { Link } from "@tanstack/react-router";
 import type { Project } from "@/types";
 
 interface ProjectsProps {
-  projects: Project[],
-  onCreateProject: (name: string, description: string) => void,
-  onSelectProject: (id: string) => void,
-  onDeleteProject: (id: string) => void,
+  projects: Project[]
 }
 
-const Projects = ({ projects, onCreateProject }: ProjectsProps) => {
+const Projects = ({ projects }: ProjectsProps) => {
   const [isCreating, setIsCreating] = useState(false);
 
   return (
     <>
-      {isCreating && <ProjectForm onCreateProject={onCreateProject} setIsCreating={setIsCreating} />}
+      {isCreating && <ProjectForm setIsCreating={setIsCreating} />}
 
       {/* Projects Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

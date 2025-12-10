@@ -18,11 +18,10 @@ const formSchema = z.object({
 });
 
 interface ProjectFormProps {
-  onCreateProject: (name: string, description: string) => void,
   setIsCreating: (creating: boolean) => void,
 }
 
-const ProjectForm = ({ onCreateProject, setIsCreating }: ProjectFormProps) => {
+const ProjectForm = ({ setIsCreating }: ProjectFormProps) => {
   const form = useForm({
     defaultValues: {
       name: "",
@@ -34,7 +33,6 @@ const ProjectForm = ({ onCreateProject, setIsCreating }: ProjectFormProps) => {
     onSubmit: ({ value }) => {
       console.log('sumbitting', value);
 
-      onCreateProject(value.name, value.description);
       setIsCreating(false);
     }
   });
