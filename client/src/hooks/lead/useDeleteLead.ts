@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteLead } from "@/services/deleteLead";
+import { deleteLead } from "@/services/lead/deleteLead";
 
 interface DeleteVars {
   id: string;

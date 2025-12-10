@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchLeads } from "@/services/fetchLeads";
+import { fetchLeads } from "@/services/lead/fetchLeads";
 
 export const useGetLeads = () => {
   const { isLoading, error, data } = useQuery({

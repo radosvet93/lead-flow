@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Lead, ProjectLeads } from '@/types';
-import { patchLeadStatus } from '@/services/patchLeadStatus';
+import { patchLeadStatus } from '@/services/lead/patchLeadStatus';
 
 export const useUpdateLeadStatus = () => {
   const queryClient = useQueryClient();

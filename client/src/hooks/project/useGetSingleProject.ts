@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchProject } from "@/services/fetchProject";
+import { fetchProject } from "@/services/project/fetchProject";
 
 export const useGetSingleProject = (id: string) => {
   const { isLoading, error, data } = useQuery({

@@ -15,15 +15,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGetSingleProject } from '@/hooks/useGetSingleProject';
-import { useUpdateLeadStatus } from '@/hooks/useUpdatedLeadStatus';
+import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
+import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useForm } from '@tanstack/react-form';
 import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group';
 import type { Lead } from '@/types';
 import { useState } from 'react';
-import { useCreateLead } from '@/hooks/useCreateLead';
+import { useCreateLead } from '@/hooks/lead/useCreateLead';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: ProjectRoute,

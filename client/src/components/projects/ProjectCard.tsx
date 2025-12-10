@@ -2,8 +2,8 @@ import { formatDistanceToNow } from "date-fns";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { useGetSingleProject } from "@/hooks/useGetSingleProject";
-import { useDeleteProject } from "@/hooks/useDeleteProject";
+import { useGetSingleProject } from "@/hooks/project/useGetSingleProject";
+import { useDeleteProject } from "@/hooks/project/useDeleteProject";
 
 interface ProjectCardProps {
   id: string

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createLead } from '@/services/createLead';
+import { createLead } from '@/services/lead/createLead';
 import type { CreateLeadPayload } from '@/types';
 
 export const useCreateLead = () => {

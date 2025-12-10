@@ -4,7 +4,7 @@ import { GripVertical, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "./ui/button";
-import { useDeleteLead } from "@/hooks/useDeleteLead";
+import { useDeleteLead } from "@/hooks/lead/useDeleteLead";
 
 const PIPELINE_STAGES = [
   { id: "new", label: "New", color: "border-slate-200" },

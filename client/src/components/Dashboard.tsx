@@ -1,7 +1,7 @@
 import Projects from "./projects/Projects";
-import { useGetProjects } from "@/hooks/useGetProjects";
-import { useGetLeads } from "@/hooks/useGetLeads";
-import { useGetEmails } from "@/hooks/useGetEmails";
+import { useGetProjects } from "@/hooks/project/useGetProjects";
+import { useGetLeads } from "@/hooks/lead/useGetLeads";
+import { useGetEmails } from "@/hooks/email/useGetEmails";
 import { AnalyticsCardForDashboard } from "./AnalyticsCardForDashboard";
 
 const Dashboard = () => {

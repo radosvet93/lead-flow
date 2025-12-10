@@ -9,7 +9,7 @@ import { Dialog, DialogClose, DialogFooter, DialogHeader, DialogContent, DialogD
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
-import { useCreateProject } from '@/hooks/useCreateProject';
+import { useCreateProject } from '@/hooks/project/useCreateProject';
 
 const formSchema = z.object({
   name: z
