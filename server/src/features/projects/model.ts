@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../../db/setup";
 import { pgTable, text, uuid, timestamp } from 'drizzle-orm/pg-core';
 import { createSelectSchema } from 'drizzle-zod';
+import { leadsTable } from "../leads/model";
 
 export const projectsTable = pgTable("projects", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -12,5 +13,26 @@ export const projectsTable = pgTable("projects", {
 
 export const projectsSelectSchema = createSelectSchema(projectsTable)
 
-export const projectById = (id: string) => db.select().from(projectsTable).where(eq(projectsTable.id, id));
 export const listProjects = () => db.select().from(projectsTable)
+export const projectWithLeads = (id: string) =>
+  db.select({
+    project: {
+      id: projectsTable.id,
+      name: projectsTable.name,
+      description: projectsTable.description,
+      createdAt: projectsTable.createdAt
+    },
+    lead: {
+      id: leadsTable.id,
+      name: leadsTable.name,
+      email: leadsTable.email,
+      company: leadsTable.company,
+      jobTitle: leadsTable.jobTitle,
+      notes: leadsTable.notes,
+      status: leadsTable.status,
+      createdAt: leadsTable.createdAt,
+    }
+  })
+    .from(projectsTable)
+    .leftJoin(leadsTable, eq(leadsTable.projectId, projectsTable.id))
+    .where(eq(projectsTable.id, id));
