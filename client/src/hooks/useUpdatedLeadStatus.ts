@@ -6,6 +6,7 @@ export const useUpdateLeadStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ['updateStatusLead'],
     mutationFn: ({ id, status }: { id: string; status: Lead['status'] }) => patchLeadStatus(id, status),
 
     onSuccess: updatedLead => {
