@@ -1,7 +1,7 @@
-import Projects from "./projects/Projects";
 import { useGetProjects } from "@/hooks/project/useGetProjects";
 import { useGetLeads } from "@/hooks/lead/useGetLeads";
 import { useGetEmails } from "@/hooks/email/useGetEmails";
+import Projects from "./projects/Projects";
 import { AnalyticsCardForDashboard } from "./AnalyticsCardForDashboard";
 
 const Dashboard = () => {
@@ -11,7 +11,6 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h2 className="text-3xl font-bold">Dashboard</h2>
         <p className="text-muted-foreground mt-1">Manage your outreach campaigns and track leads</p>

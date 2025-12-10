@@ -8,8 +8,8 @@ interface AnalyticsCardForDashboardProps {
 }
 
 export const AnalyticsCardForDashboard = ({ projectsCount, leadsCount, emailsCount }: AnalyticsCardForDashboardProps) => {
-  return (
 
+  return (
     <div className="grid gap-4 md:grid-cols-3" >
       <Card className="p-6">
         <div className="flex items-start justify-between">
