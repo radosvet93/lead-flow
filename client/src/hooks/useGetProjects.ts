@@ -3,7 +3,7 @@ import { fetchProjects } from "@/services/fetchProjects";
 
 export const useGetProjects = () => {
   const { isLoading, error, data } = useQuery({
-    queryKey: ['getProjects'],
+    queryKey: ['projects'],
     queryFn: fetchProjects
   });
 

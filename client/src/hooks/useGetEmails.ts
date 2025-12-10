@@ -3,7 +3,7 @@ import { fetchEmails } from "@/services/fetchEmails";
 
 export const useGetEmails = () => {
   const { isLoading, error, data } = useQuery({
-    queryKey: ['getEmails'],
+    queryKey: ['emails'],
     queryFn: fetchEmails
   });
 

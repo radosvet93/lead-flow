@@ -3,7 +3,7 @@ import { fetchLeads } from "@/services/fetchLeads";
 
 export const useGetLeads = () => {
   const { isLoading, error, data } = useQuery({
-    queryKey: ['getLeads'],
+    queryKey: ['leads'],
     queryFn: fetchLeads
   });
 
