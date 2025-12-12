@@ -1,4 +1,7 @@
-export type StatusUnion = "new" | "contacted" | "interested" | "closed" | "declined";
+export const EmailToneValues = ["professional", "friendly", "casual", "urgent"] as const;
+export type EmailTone = (typeof EmailToneValues)[number];
+
+export type Status = "new" | "contacted" | "interested" | "closed" | "declined";
 
 export interface Project {
   id: string,
@@ -11,7 +14,7 @@ export interface Lead {
   id: string,
   name: string,
   email: string,
-  status: StatusUnion,
+  status: Status,
   jobTitle: string,
   company: string,
   notes: string,
