@@ -6,10 +6,13 @@ import LeadsTable from '@/components/LeadsTable';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useForm } from '@tanstack/react-form';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from '@/components/ui/select';
 import { EmailToneValues, type EmailTone } from '@/types';
 import { useGenerateEmail } from '@/hooks/lead/useGenerateEmail';
+import { AlertCircleIcon, Loader2 } from 'lucide-react';
+import { Editor } from '@/components/Editor';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export const Route = createFileRoute('/emails/$projectId/')({
   component: EmailRoute,
@@ -19,9 +22,13 @@ function EmailRoute() {
   const { projectId } = Route.useParams();
 
   const { data: project } = useGetSingleProject(projectId);
-  const { mutate: generateEmail } = useGenerateEmail();
-
-  console.log('{project', project);
+  const {
+    mutate: generateEmail,
+    data,
+    isPending,
+    isSuccess,
+    isError
+  } = useGenerateEmail();
 
   const form = useForm({
     defaultValues: {
@@ -156,25 +163,50 @@ function EmailRoute() {
                   />
                 </FieldGroup>
                 <div className="flex gap-2">
-                  <Button type="submit" className="flex-1">
-                    Generate email
+                  <Button type="submit" className="flex-1" disabled={isPending}>
+                    {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isPending ? "Generating…" : "Generate email"}
                   </Button>
                 </div>
               </form>
             </Card>
 
-            <Card className="flex-1 p-6 flex items-center justify-center text-center">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">No email generated yet</h3>
-                <p className="text-muted-foreground">Select a lead and click "Generate Email" to get started</p>
-              </div>
+            <Card className="flex-1 p-6 flex items-center justify-center">
+              {isError && (
+                <Alert variant="destructive">
+                  <AlertCircleIcon />
+                  <AlertTitle>Error!</AlertTitle>
+                  <AlertDescription>
+                    Failed to generate email
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {isPending && (
+                <div className="text-center">
+                  <Loader2 className="h-6 w-6 animate-spin mx-auto mb-4" />
+                  <p className="text-muted-foreground">Generating your email…</p>
+                </div>
+              )}
+
+              {isSuccess && (
+                <div className="space-y-4">
+                  <CardTitle className="text-xl font-semibold">Generated Email</CardTitle>
+                  <CardDescription className='text-muted-foreground italic'>You can edit the email now</CardDescription>
+                  <CardContent className='px-0'>
+                    <Editor html={data.email} />
+                  </CardContent>
+                </div>
+              )}
+
+              {!isPending && !isSuccess && (
+                <div className='text-center'>
+                  <h3 className="text-lg font-semibold mb-2">No email generated yet</h3>
+                  <p className="text-muted-foreground">Select a lead and click "Generate Email" to get started</p>
+                </div>
+              )}
             </Card>
-
           </div>
-          <p>This will generate an email, with all the information from the project and the lead</p>
-          <p>Then you can edit the email and click on send which will send the email, using your provided email</p>
-
-          <hr />
 
           <LeadsTable leads={project?.leads ?? []} />
 
